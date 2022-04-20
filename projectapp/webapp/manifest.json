@@ -62,7 +62,8 @@
                 "sap.ui.comp": {},
                 "sap.ui.generic.app": {},
                 "sap.ui.table": {},
-                "sap.ushell": {}
+                "sap.ushell": {},
+				"sap.uxap": {}
             }
         },
         "contentDensities": {
@@ -99,17 +100,27 @@
                     "name": "RouteView1",
                     "pattern": "RouteView1",
                     "target": [
+                        "TargetView1",
+                        "TargetView2"
+                    ]
+                },
+                {
+                    "name": "RouteView2",
+                    "pattern": "RouteView2",
+                    "target": [
+                        "TargetView2",
                         "TargetView1"
                     ]
                 }
             ],
             "targets": {
                 "TargetView1": {
-                    "viewType": "JS",
-                    "transition": "slide",
-                    "clearControlAggregation": false,
-                    "viewId": "View1",
-                    "viewName": "View1"
+                    "viewName": "View1",
+                    "ControlAggregation":"beginColumnPages"
+                },
+                "TargetView2": {
+                    "viewName": "View1",
+                    "ControlAggregation":"midColumnPages"
                 }
             }
         },

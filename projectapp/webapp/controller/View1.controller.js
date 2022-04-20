@@ -10,6 +10,7 @@ sap.ui.define([
 
         return oController.extend("ns.projectapp.controller.View1", {
             onInit: function () {
+                this.router = this.getOwnerComponent().getRouter();
                 var i18n = new sap.ui.model.resource.ResourceModel({bundleUrl: "./i18n/i18n.properties"});
                 this.i18nBundle = i18n.getResourceBundle();
 
@@ -60,7 +61,6 @@ sap.ui.define([
                 }
                 this.oServices= new oServices(this.getOwnerComponent());
                 this.oServices.getCustomers().then(res =>{
-                    // console.log(res.value);
                     let aRows=res.value.map(oCustomers=>({
                         id:oCustomers.ProductID,
                         name: oCustomers.ProductName,
@@ -76,7 +76,7 @@ sap.ui.define([
                     this.oTableData.rows=aRows;
                     this.modelTable=new sap.ui.model.json.JSONModel(this.oTableData);
                     this.byId("northwind-table").setModel(this.modelTable);
-
+                    this.byId("productQuantityDetail").setModel(this.modelTable);
                     this.byId("northwind-table").bindItems({
                         path:"/rows",
                         template: new sap.m.ColumnListItem({
@@ -368,7 +368,6 @@ sap.ui.define([
                     }else{
                         this.oTableData.rows.push(newData);
                     }
-                    console.log(this.oTableData.rows);
                     this.modelTable.refresh();
                     this.dialog.close();
                     this.dialog.destroyContent();
@@ -455,8 +454,31 @@ sap.ui.define([
                 this.byId("update").setVisible(true);
                 this.byId("delete").setVisible(true);
 
-                var {listItem} = e.getParameters();
+                var {listItem} = e.getParameters()
                 this.dataRow = listItem.getBindingContext().getObject();
+                var value=this.dataRow.name;
+                this.byId("nameDetail").setText(value);
+                this.byId("nameProductDetail").setText(value);
+                this.byId("categoryDetail").setText(this.dataRow.category);
+                this.byId("priceDetail").setText("EUR "+this.dataRow.price);
+                this.byId("stockDetail").setText(this.dataRow.stock);
+
+                this.byId("productIdDetail").setText(this.dataRow.id);
+                this.byId("productNameDetail").setText(this.dataRow.name);
+                this.byId("productSupplierDetail").setText(this.dataRow.supplier);
+                this.byId("productCategoryDetail").setText(this.dataRow.category);
+                this.byId("productPriceDetail").setText(this.dataRow.price);
+                this.byId("productLevelDetail").setText(this.dataRow.reorderLevel);
+                this.byId("productDiscontinuedDetail").setText(this.dataRow.discontinued);
+                this.byId("productStockDetail").setText(this.dataRow.stock);
+                this.byId("productOrderDetail").setText(this.dataRow.order);
+                this.byId("fcl").setLayout("TwoColumnsBeginExpanded");
+            },
+            onClosePress:function(){
+                this.byId("fcl").setLayout("OneColumn");
+                this.modelTable.refresh();
+                this.byId("delete").setVisible(false);
+                this.byId("update").setVisible(false);
             },
             onSearchPress:function(e){
                 var sInput=e.getSource().getValue();
@@ -503,7 +525,6 @@ sap.ui.define([
                 var table=this.byId("northwind-table");
 
                 var items = table.getBinding("items");
-                console.log(items);
                 sorters.push(new sap.ui.model.Sorter(key, order));
 
                 items.sort(sorters);
@@ -599,6 +620,6 @@ sap.ui.define([
                 items.sort([]);
                 this.modelTable=new sap.ui.model.json.JSONModel(this.oTableData);
                 table.setModel(this.modelTable);
-            }
+            },
         });
     });
