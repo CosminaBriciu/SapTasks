@@ -1,0 +1,14 @@
+/* Enter your custom styles here */
+.bold-class-text {
+    font-weight: bold;
+    font-size: 15px;
+    display:block;
+    text-align:right !important
+}
+.bold-class {
+    font-weight: bold;
+    font-size: 25px;
+}
+.custom-progress-indicator {
+    
+}
