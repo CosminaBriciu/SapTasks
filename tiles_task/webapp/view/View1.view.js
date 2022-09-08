@@ -14,18 +14,6 @@ sap.ui.define(function () {
                                 title: "{i18n>TILES}",
                                 subSections: new sap.uxap.ObjectPageSubSection({
                                     blocks: [
-                                        // new sap.ui.layout.form.Form({
-                                        //     layout: new sap.ui.layout.form.ResponsiveGridLayout({
-                                        //         labelSpanXL: 3,
-                                        //         labelSpanL: 3,
-                                        //         labelSpanM: 3,
-                                        //         // adjustLabelSpan: false,
-                                        //     }),
-                                        //     formContainers: new sap.ui.layout.form.FormContainer({
-                                        //         formElements: [
-                                        //             new sap.ui.layout.form.FormElement({
-
-                                        //                 fields: [
                                         new sap.m.HBox({
                                             items: [
                                                 new sap.m.GenericTile(this.createId("first-tile"), {
@@ -97,7 +85,6 @@ sap.ui.define(function () {
 
 
                                                         ],
-                                                        // modelContextChange: Controller.onChangeCurrentScheduledOrders.bind(Controller),
                                                     })
                                                 }).addStyleClass("sapUiTinyMarginEnd"),
                                                 new sap.m.GenericTile(this.createId("third-tile"), {
@@ -114,12 +101,6 @@ sap.ui.define(function () {
                                                 }).addStyleClass("sapUiTinyMarginEnd"),
                                             ]
                                         })
-
-                                        //                 ]
-                                        //             })
-                                        //         ]
-                                        //     })
-                                        // })
                                     ]
                                 })
                             }),

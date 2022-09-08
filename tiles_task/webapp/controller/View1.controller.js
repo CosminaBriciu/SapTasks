@@ -112,17 +112,11 @@ sap.ui.define([
                             }).addStyleClass("sapUiSmallMarginEnd")
                         )
                         this.byId("resource-status-id").addItem(
-                            // new sap.m.VBox({
-                                // alignItems:"End",
-                                // items:[
                                     new sap.m.Text({
                                         text: {
                                             path: `/resourceStatus/${index}/text`
                                         }
                                     }).addStyleClass("bold-class-text")
-                                // ]
-                            // })
-                            
                         )
                     }
                 }
