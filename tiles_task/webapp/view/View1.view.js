@@ -65,7 +65,9 @@ sap.ui.define(function () {
                                                                                 color:"darkblue"
                                                                             }),
                                                                             new sap.m.Text(this.createId("count-scheduled-order"), {
-                                                                                text: "1"
+                                                                                text: {
+                                                                                    path:"/scheduledOrders/0/value"
+                                                                                }
                                                                             }).addStyleClass("bold-class")
                                                                         ]
                                                                     }).addStyleClass("sapUiTinyMarginBottom"),

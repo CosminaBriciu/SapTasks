@@ -19,7 +19,7 @@ sap.ui.define([
                 var oResourceStatus = {
                     resourceStatus: [
                         {
-                            "key": "Productive",
+                            "key": "PRODUCTIVE",
                             "text": this.getView().getModel("i18n").getResourceBundle().getText("PRODUCTIVE"),
                             "icon": {
                                 "src":"sap-icon://cancel-maintenance",
@@ -28,7 +28,7 @@ sap.ui.define([
                             
                         },
                         {
-                            "key": "Enabled",
+                            "key": "ENABLED",
                             "text": this.getView().getModel("i18n").getResourceBundle().getText("ENABLED"),
                             "icon": {
                                 "src":"sap-icon://accept",
@@ -36,7 +36,7 @@ sap.ui.define([
                             }
                         },
                         {
-                            "key": "Scheduled down",
+                            "key": "SCHEDULED DOWN",
                             "text": this.getView().getModel("i18n").getResourceBundle().getText("SCHEDULED_DOWN"),
                             "icon": {
                                 "src":"sap-icon://date-time",
@@ -44,7 +44,7 @@ sap.ui.define([
                             }
                         },
                         {
-                            "key": "Unscheduled down",
+                            "key": "UNSCHEDULED DOWN",
                             "text": this.getView().getModel("i18n").getResourceBundle().getText("UNSCHEDULED_DOWN"),
                             "icon": {
                                 "src":"sap-icon://check-availability",
@@ -53,7 +53,7 @@ sap.ui.define([
 
                         },
                         {
-                            "key": "Unknown",
+                            "key": "UNKNOWN",
                             "text": this.getView().getModel("i18n").getResourceBundle().getText("UNKNOWN"),
                             "icon": {
                                 "src":"sap-icon://question-mark",
@@ -63,11 +63,56 @@ sap.ui.define([
 
                     ],
                 }
+                var res={
+                    "plant": "LEGO",
+                    "resource": "40501-2",
+                    "description": "Brick Moulding machine No. 2 1K - Hall A", // oResourceTiles.resourceTile[0].resource_description
+                    "process": false,
+                    "status": "ENABLED", //oResourceTiles.resourceTile[0].resource_status
+                    "setupState": "OPEN",
+                    "efficiency": 100,
+                    "modifiedDateTime": "2022-08-23T08:39:15.691+00:00",
+                    "createdDateTime": "2022-08-11T12:17:58.109+00:00",
+                    "customValues": [
+                        {
+                            "attribute": "IM_CYCLE_TIME_CURRENT",
+                            "value": "26,7"
+                        },
+                        {
+                            "attribute": "SYN_CAVITY_TOOL",
+                            "value": "8"
+                        },	
+                        {
+                            "attribute": "SYN_CAVITY_TOOL_CURRENT",
+                            "value": "8" // oResourceTiles.currentOrder[0].cavity.value
+                        }
+                    ],
+                    "types": [
+                        {
+                            "modifiedDateTime": "2022-08-11T12:13:34.063+00:00",
+                            "createdDateTime": "2022-08-11T12:13:34.062+00:00",
+                            "plant": "LEGO",
+                            "description": "Injection Molding Resource Type",
+                            "type": "INJECTIONMOLDING"
+                        }
+                    ],
+                    "bins": [],
+                    "equipment": [],
+                    "assignedOrders": 1, // oResourceTiles.schedulesOrders[0].value
+                    "order": {
+                        "materialDescription": "Yellow headstone", //oResourceTiles.currentOrder[0]["material_description"]
+                        "remaining": "-25d 5h 43min",
+                        "overdue": true,
+                        "material": "300124", // oResourceTiles.currentOrder[0]["material_no"]
+                        "shopOrder": "IM_20220817" // oResourceTiles.currentOrder[0]["order no."]
+                    },
+                    toolNumber: "Lego_Equipment" //oResourceTiles.currentOrder[0]["tool no."]
+                }
                 var oResourcesTiles = {
                     resourceTile: [
                         {
-                            "resource_description": "5.0X / SMT TECMATION",
-                            "resource_status": "Productive",
+                            "resource_description": res.description,
+                            "resource_status": res.status,
                             "reason_code": "sds",
                             "duration_of_status": "48d 2h 55m"
                         }
@@ -75,19 +120,19 @@ sap.ui.define([
                     scheduledOrders: [
                         {
                             "resource": "Scheduled orders",
-                            "value": "0",
+                            "value": res.assignedOrders,
                             "valueText": "Count"
                         }
                     ],
                     currentOrder: [
                         {
                             "resource": "Current order",
-                            "order no.": "15200122",
-                            "material no.": "305.255.011-06",
-                            "material description": "selected",
-                            "tool no.": "1000013062",
+                            "order no.":res.order.shopOrder,
+                            "material no.": res.order.material,
+                            "material description": res.order.materialDescription,
+                            "tool no.": res.toolNumber,
                             "cavity": {
-                                "value": "1",
+                                "value": res.customValues[2].value,
                                 "text": "Cavity"
                             }
                         }
@@ -95,7 +140,6 @@ sap.ui.define([
                 };
                 var oModel = new sap.ui.model.json.JSONModel(oResourcesTiles);
                 var oModelStatus=new sap.ui.model.json.JSONModel(oResourceStatus);
-
                 for (var j = 1; j < Object.keys(oResourcesTiles.resourceTile['0']).length - 1; j++) {
                     if (Object.keys(oResourcesTiles.resourceTile['0'])[j] == "resource_status") {
                         var sValueStatus = Object.values(oResourcesTiles.resourceTile['0'])[j];
@@ -120,7 +164,6 @@ sap.ui.define([
                         )
                     }
                 }
-                
                 this.byId("first-tile").setModel(oModel);
                 this.byId("resource-status-id").setModel(oModelStatus)
                 this.byId("second-tile").setModel(oModel);
