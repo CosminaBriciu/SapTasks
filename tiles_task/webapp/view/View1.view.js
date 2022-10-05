@@ -18,33 +18,106 @@ sap.ui.define(function () {
                                             items: [
                                                 new sap.m.GenericTile(this.createId("first-tile"), {
                                                     header: {
-                                                        path: "/resourceTile/0/resource_description"
+                                                        path: "/resourceTile/0/resourceDescription"
                                                     },
                                                     tileContent: new sap.m.TileContent({
                                                         content: [
                                                             new sap.m.VBox({
-                                                                items: [
-                                                                    new sap.m.HBox(this.createId("resource-status-id"), {
-                                                                        justifyContent: sap.m.FlexJustifyContent.SpaceBetween,
+                                                                items:[
+                                                                    new sap.m.VBox({
+                                                                        items: {
+                                                                            path: "/resourceTile",
+                                                                            factory: (id, context) => {
+                                                                                var oResourceTile = context.getProperty()
+                                                                                var sValueStatus = oResourceTile.resourceStatus;
+                                                                                var oResourceStatus = {
+                                                                                    resourceStatus: [
+                                                                                        {
+                                                                                            "key": "PRODUCTIVE",
+                                                                                            "text": "{i18n>PRODUCTIVE}",
+                                                                                            "icon": {
+                                                                                                "src": "sap-icon://cancel-maintenance",
+                                                                                                "color": "Critical"
+                                                                                            }
+        
+                                                                                        },
+                                                                                        {
+                                                                                            "key": "ENABLED",
+                                                                                            "text": "{i18n>ENABLED}",
+                                                                                            "icon": {
+                                                                                                "src": "sap-icon://accept",
+                                                                                                "color": "Positive"
+                                                                                            }
+                                                                                        },
+                                                                                        {
+                                                                                            "key": "SCHEDULED DOWN",
+                                                                                            "text": "{i18n>SCHEDULED_DOWN}",
+                                                                                            "icon": {
+                                                                                                "src": "sap-icon://date-time",
+                                                                                                "color": "Marker"
+                                                                                            }
+                                                                                        },
+                                                                                        {
+                                                                                            "key": "UNSCHEDULED DOWN",
+                                                                                            "text": "{i18n>UNSCHEDULED_DOWN}",
+                                                                                            "icon": {
+                                                                                                "src": "sap-icon://check-availability",
+                                                                                                "color": "Critical"
+                                                                                            }
+        
+                                                                                        },
+                                                                                        {
+                                                                                            "key": "UNKNOWN",
+                                                                                            "text": "{i18n>UNKNOWN}",
+                                                                                            "icon": {
+                                                                                                "src": "sap-icon://question-mark",
+                                                                                                "color": "Neutral"
+                                                                                            }
+                                                                                        },
+        
+                                                                                    ],
+                                                                                }
+                                                                                var index = oResourceStatus.resourceStatus.findIndex(o => o.key == sValueStatus)
+                                                                                if (index != -1) {
+                                                                                    return new sap.m.HBox(this.createId("resource-status-id"), {
+                                                                                        justifyContent: sap.m.FlexJustifyContent.SpaceBetween,
+                                                                                        items: [
+                                                                                            new sap.ui.core.Icon({
+                                                                                                size: "30px",
+                                                                                                src: oResourceStatus.resourceStatus[index].icon.src,
+                                                                                                color: oResourceStatus.resourceStatus[index].icon.color,
+                                                                                            }).addStyleClass("sapUiSmallMarginEnd"),
+                                                                                            new sap.m.Text({
+                                                                                                text: oResourceStatus.resourceStatus[index].text
+                                                                                            }).addStyleClass("bold-class-text")
+                                                                                        ]
+                                                                                    })
+                                                                                }
+                                                                            }
+                                                                        }
+        
                                                                     }).addStyleClass("sapUiTinyMarginBottom"),
                                                                     new sap.m.VBox({
                                                                         alignItems: sap.m.FlexAlignItems.End,
                                                                         items: [
                                                                             new sap.m.Label({
                                                                                 text: {
-                                                                                    path: "/resourceTile/0/reason_code"
+                                                                                    path: "/resourceTile/0/reasonCode"
                                                                                 }
                                                                             }),
                                                                             new sap.m.Label({
                                                                                 text: {
-                                                                                    path: "/resourceTile/0/duration_of_status"
+                                                                                    path: "/resourceTile/0/durationOfStatus"
                                                                                 }
                                                                             })
                                                                         ]
                                                                     })
                                                                 ]
                                                             })
+                                                            
+                                                            
                                                         ]
+
                                                     })
 
                                                 }).addStyleClass("sapUiTinyMarginEnd"),
@@ -62,11 +135,11 @@ sap.ui.define(function () {
                                                                             new sap.ui.core.Icon({
                                                                                 size: "30px",
                                                                                 src: "sap-icon://add",
-                                                                                color:"darkblue"
+                                                                                color: "darkblue"
                                                                             }),
                                                                             new sap.m.Text(this.createId("count-scheduled-order"), {
                                                                                 text: {
-                                                                                    path:"/scheduledOrders/0/value"
+                                                                                    path: "/scheduledOrders/0/value"
                                                                                 }
                                                                             }).addStyleClass("bold-class")
                                                                         ]
@@ -84,8 +157,6 @@ sap.ui.define(function () {
 
                                                                 ]
                                                             })
-
-
                                                         ],
                                                     })
                                                 }).addStyleClass("sapUiTinyMarginEnd"),
@@ -96,7 +167,47 @@ sap.ui.define(function () {
                                                     tileContent: new sap.m.TileContent({
                                                         content: [
                                                             new sap.m.VBox(this.createId("third-tile-content"), {
-
+                                                                items: [
+                                                                    new sap.m.Label({
+                                                                        text: {
+                                                                            path: "/currentOrder/0/orderNo"
+                                                                        }
+                                                                    }),
+                                                                    new sap.m.Label({
+                                                                        text: {
+                                                                            path: "/currentOrder/0/materialNo"
+                                                                        }
+                                                                    }),
+                                                                    new sap.m.Label({
+                                                                        text: {
+                                                                            path: "/currentOrder/0/materialDescription"
+                                                                        }
+                                                                    }),
+                                                                    new sap.m.Label({
+                                                                        text: {
+                                                                            path: "/currentOrder/0/toolNo"
+                                                                        }
+                                                                    }),
+                                                                    new sap.m.HBox({
+                                                                        width: "100%",
+                                                                        justifyContent: sap.m.FlexJustifyContent.End,
+                                                                        items: [
+                                                                            new sap.m.Label({
+                                                                                text: {
+                                                                                    path: `/currentOrder/0/cavity/text`,
+                                                                                    formatter: function (oVal) {
+                                                                                        return oVal + ":";
+                                                                                    }
+                                                                                }
+                                                                            }),
+                                                                            new sap.m.Label({
+                                                                                text: {
+                                                                                    path: `/currentOrder/0/cavity/value`
+                                                                                }
+                                                                            })
+                                                                        ]
+                                                                    })
+                                                                ]
                                                             })
                                                         ]
                                                     })
@@ -131,10 +242,108 @@ sap.ui.define(function () {
                                                                         justifyContent: sap.m.FlexJustifyContent.SpaceBetween,
                                                                         items: [
                                                                             new sap.m.VBox(this.createId("reported-production-id"), {
+                                                                                items: {
+                                                                                    path: "/reportedProduction",
+                                                                                    factory: (id, context) => {
+                                                                                        var oReportedProduction = context.getProperty();
+                                                                                        if (oReportedProduction.name == "") {
+                                                                                            return new sap.m.HBox({
+                                                                                                justifyContent: sap.m.FlexJustifyContent.SpaceBetween,
+                                                                                                items: [
+                                                                                                    new sap.m.Label({
+                                                                                                    }).addStyleClass("sapUiTinyMarginTop"),
+                                                                                                    new sap.m.Input({
+                                                                                                        enabled: false,
+                                                                                                        visible: false
+                                                                                                    })
+                                                                                                ]
+                                                                                            })
+                                                                                        } else {
+                                                                                            return new sap.m.HBox({
+                                                                                                justifyContent: sap.m.FlexJustifyContent.SpaceBetween,
+                                                                                                items: [
+                                                                                                    new sap.m.Label({
+                                                                                                        text: oReportedProduction.name + ": "
+                                                                                                    }).addStyleClass("sapUiTinyMarginEnd", "sapUiTinyMarginTop"),
+                                                                                                    new sap.m.Input(this.createId(`input0-${oReportedProduction.name.replaceAll(" ", "")}-id`), {
+                                                                                                        enabled: false,
+                                                                                                        value: oReportedProduction.value
+                                                                                                    })
+                                                                                                ]
+                                                                                            })
+                                                                                        }
+                                                                                    }
+                                                                                }
                                                                             }),
                                                                             new sap.m.VBox(this.createId("calculated-production-id"), {
+                                                                                items: {
+                                                                                    path: "/productionCalculated",
+                                                                                    factory: (id, context) => {
+                                                                                        var oProductionCalculated = context.getProperty();
+                                                                                        if (oProductionCalculated.name == "") {
+                                                                                            return new sap.m.HBox({
+                                                                                                justifyContent: sap.m.FlexJustifyContent.SpaceBetween,
+                                                                                                items: [
+                                                                                                    new sap.m.Label({
+                                                                                                    }).addStyleClass("sapUiTinyMarginTop"),
+                                                                                                    new sap.m.Input({
+                                                                                                        enabled: false,
+                                                                                                        visible: false
+                                                                                                    })
+                                                                                                ]
+                                                                                            })
+                                                                                        } else {
+                                                                                            return new sap.m.HBox({
+                                                                                                justifyContent: sap.m.FlexJustifyContent.SpaceBetween,
+                                                                                                items: [
+                                                                                                    new sap.m.Label({
+                                                                                                        text: oProductionCalculated.name + ": "
+                                                                                                    }).addStyleClass("sapUiTinyMarginEnd", "sapUiTinyMarginTop"),
+                                                                                                    new sap.m.Input(this.createId(`input1-${oProductionCalculated.name.replaceAll(" ", "")}-id`), {
+                                                                                                        enabled: false,
+                                                                                                        value: oProductionCalculated.value
+                                                                                                    })
+                                                                                                ]
+                                                                                            })
+                                                                                        }
+
+                                                                                    }
+                                                                                }
                                                                             }),
                                                                             new sap.m.VBox(this.createId("order-production-id"), {
+                                                                                items: {
+                                                                                    path: "/orderProduction",
+                                                                                    factory: (id, context) => {
+                                                                                        var oOrderProduction = context.getProperty();
+                                                                                        var sIdInput = oOrderProduction.name.replaceAll(/\[|\]/g, "")
+                                                                                        if (oOrderProduction.name == "") {
+                                                                                            return new sap.m.HBox({
+                                                                                                justifyContent: sap.m.FlexJustifyContent.SpaceBetween,
+                                                                                                items: [
+                                                                                                    new sap.m.Label({
+                                                                                                    }).addStyleClass("sapUiTinyMarginTop"),
+                                                                                                    new sap.m.Input({
+                                                                                                        enabled: false,
+                                                                                                        visible: false
+                                                                                                    })
+                                                                                                ]
+                                                                                            })
+                                                                                        } else {
+                                                                                            return new sap.m.HBox({
+                                                                                                justifyContent: sap.m.FlexJustifyContent.SpaceBetween,
+                                                                                                items: [
+                                                                                                    new sap.m.Label({
+                                                                                                        text: oOrderProduction.name + ": "
+                                                                                                    }).addStyleClass("sapUiTinyMarginEnd", "sapUiTinyMarginTop"),
+                                                                                                    new sap.m.Input(this.createId(`input2-${sIdInput.replaceAll(" ", "")}-id`), {
+                                                                                                        enabled: false,
+                                                                                                        value: oOrderProduction.value
+                                                                                                    })
+                                                                                                ]
+                                                                                            })
+                                                                                        }
+                                                                                    }
+                                                                                }
                                                                             })
                                                                         ]
 
